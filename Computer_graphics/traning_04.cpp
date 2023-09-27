@@ -1,8 +1,9 @@
 #include <gl/glew.h>
 #include <gl/freeglut.h>
 #include <gl/freeglut_ext.h>
-#include <C:\Computer_graphics\Computer_graphics\glfw/glfw3.h>
 
+
+#include "vec2.h"
 #include <iostream>
 #include <random>
 
@@ -23,7 +24,7 @@ struct Rect {
 	GLfloat x1, y1, x2, y2; // 왼쪽 아래와 오른쪽 위 꼭지점 좌표
 	GLclampf r, g, b; // 색상
 	bool selected = false; // 선택 여부
-
+	GLfloat dx = 0.01f, dy = 0.01f; // 움직임 정보 추가
 };
 
 vector<Rect> rects;
@@ -33,50 +34,114 @@ GLfloat r = 0.3f, g = 0.3f, b = 0.3f;
 bool IsTimerAlive = true;
 
 int maxRectangles = 5;
+
+//// bool 판단 변수
 bool a_moveRect = false; // 사각형들의 이동 상태를 나타내는 변수
+bool i_key = false;
+bool c_key = false;
+bool o_key = false;
+
+
 
 GLvoid drawScene(GLvoid);
 GLvoid Reshape(int w, int h);
 void Keyboard(unsigned char key, int x, int y);
 GLfloat tempx1, tempx2, tempy1, tempy2;
 
-
-void updateRectangles()
-{
+void updateRectangles() {
 	static bool reverseDirection = false;
 
 	if (a_moveRect) {
 		for (Rect& rect : rects) {
 			if (!rect.selected) {
-				GLfloat dx = 0.01f;
-				GLfloat dy = 0.01f;
+				/*if (reverseDirection) {
+					rect.dx = -0.01f;
+					rect.dy = -0.01f;
+				}
+				else {
+					rect.dx = 0.01f;
+					rect.dy = 0.01f;
+				}*/
 
-				if (reverseDirection) {
-					dx = -dx;
-					dy = -dy;
+				// 벽과의 충돌 검사
+				if (rect.x1 + rect.dx < -1.0f) {
+					// 왼쪽 벽과 충돌한 경우
+					rect.dx = fabs(rect.dx); // 반사벡터 설정
+				}
+				else if (rect.x2 + rect.dx > 1.0f) {
+					// 오른쪽 벽과 충돌한 경우
+					rect.dx = -fabs(rect.dx); // 반사벡터 설정
 				}
 
-				if (rect.x1 + dx < -1.0f || rect.x2 + dx > 1.0f) {
-					reverseDirection = !reverseDirection;
-					dx = -dx;
+				if (rect.y2 + rect.dy < -1.0f) {
+					// 아래 벽과 충돌한 경우
+					rect.dy = fabs(rect.dy); // 반사벡터 설정
 				}
-				if (rect.y1 + dy < -1.0f || rect.y2 + dy > 1.0f) {
-					reverseDirection = !reverseDirection;
-					dy = -dy;
+				else if (rect.y1 + rect.dy > 1.0f) {
+					// 위 벽과 충돌한 경우
+					rect.dy = -fabs(rect.dy); // 반사벡터 설정
 				}
 
-				rect.x1 += dx;
-				rect.x2 += dx;
-				rect.y1 += dy;
-				rect.y2 += dy;
+				rect.x1 += rect.dx;
+				rect.x2 += rect.dx;
+				rect.y1 += rect.dy;
+				rect.y2 += rect.dy;
 			}
 		}
 	}
 }
+
+
+void updateRectangles2() {
+	static bool reverseDirection = false;
+
+	if (i_key) {
+		for (Rect& rect : rects) {
+			if (!rect.selected) {
+
+				// 벽과의 충돌 검사
+				if (rect.x1 + rect.dx < -1.0f) {
+					// 왼쪽 벽과 충돌한 경우
+					rect.dx = fabs(rect.dx); // 반사벡터 설정
+				}
+				else if (rect.x2 + rect.dx > 1.0f) {
+					// 오른쪽 벽과 충돌한 경우
+					rect.dx = -fabs(rect.dx); // 반사벡터 설정
+				}
+
+				rect.x1 += rect.dx;
+				rect.x2 += rect.dx;
+			}
+		}
+	}
+}
+
 // 타이머
 void TimerFunction(int value)
 {
-	updateRectangles();
+	if(	a_moveRect)
+		updateRectangles();
+	else if (i_key)
+	{
+		updateRectangles2();
+	}
+
+	if (c_key)
+	{
+		for (auto& rect : rects) {
+			rect.x1 = (GLclampf)dist(eng);
+			rect.y1 = (GLclampf)dist(eng);
+		}
+	}
+
+	if (o_key)
+	{
+		for (auto& rect : rects) {
+			rect.r = (GLclampf)dist(eng);
+			rect.g = (GLclampf)dist(eng);
+			rect.b = (GLclampf)dist(eng);
+		}
+	}
 	glutPostRedisplay(); // 화면 재 출력
 	if (IsTimerAlive)
 		glutTimerFunc(100, TimerFunction, 1); // 타이머함수 재 설정
@@ -128,6 +193,7 @@ void Keyboard(unsigned char key, int x, int y)
 {
 	switch (key) {
 	case 'a':
+		i_key = false;
 		if (a_moveRect == false) {
 			a_moveRect = true;
 			glutTimerFunc(100, TimerFunction, 1);
@@ -137,8 +203,69 @@ void Keyboard(unsigned char key, int x, int y)
 		{
 			a_moveRect = false;
 			glutTimerFunc(100, TimerFunction, 1);
-			IsTimerAlive = false;
+
 		}
+		break;
+	case 'i':
+		a_moveRect = false;
+		if (i_key == false) {
+			i_key = true;
+			glutTimerFunc(100, TimerFunction, 1);
+			IsTimerAlive = true;
+		}
+		else
+		{
+			i_key = false;
+			glutTimerFunc(100, TimerFunction, 1);
+
+		}
+		break;
+	case 'c':
+		if (c_key == false) {
+			c_key = true;
+			glutTimerFunc(100, TimerFunction, 1);
+			IsTimerAlive = true;
+		}
+		else
+		{
+			c_key = false;
+			glutTimerFunc(100, TimerFunction, 1);
+
+		}
+		break;
+	case 'o':
+		if (o_key == false) {
+			o_key = true;
+			glutTimerFunc(100, TimerFunction, 1);
+			IsTimerAlive = true;
+		}
+		else
+		{
+			o_key = false;
+			glutTimerFunc(100, TimerFunction, 1);
+			
+		}
+		break;
+	case 's':
+		IsTimerAlive = false;
+		a_moveRect = false;
+		o_key = false;
+		c_key = false;
+		i_key = false;
+		break;
+	case 'm':
+		for (auto& rect : rects) {
+			rect.x1 = rect.base_x1;
+			rect.y1 = rect.base_y1;
+			rect.x2 = rect.base_x2;
+			rect.y2 = rect.base_y2;
+		}
+		break;
+	case 'r':
+		rects.clear();
+		break;
+	case 'q':
+		glutLeaveMainLoop();
 		break;
 	}
 	glutPostRedisplay();

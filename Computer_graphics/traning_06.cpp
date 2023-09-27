@@ -1,7 +1,7 @@
 #include <gl/glew.h>
 #include <gl/freeglut.h>
 #include <gl/freeglut_ext.h>
-#include <C:\Computer_graphics\Computer_graphics\glfw/glfw3.h>
+
 
 #include <iostream>
 #include <random>
