@@ -1,7 +1,7 @@
 #include <gl/glew.h>
 #include <gl/freeglut.h>
 #include <gl/freeglut_ext.h>
-#include <C:\Computer_graphics\Computer_graphics\glfw/glfw3.h>
+
 
 #include <iostream>
 #include <random>
@@ -134,8 +134,7 @@ void Mouse(int button, int state, int m_x, int m_y)
 			else  {
 				tempy2 = 300 - rect.y2 * 300 ;
 			}
-			//cout << "사각형 변환 좌표 1	: " << tempx1 << "\t" << tempy1 << endl;
-		//	cout << "사각형 변환 좌표 2	: " << tempx2 << "\t" << tempy2 << endl;
+		
 			if ((tempx1 < m_x && m_x < tempx2)
 				&& (tempy1 < m_y && m_y < tempy2))
 			{

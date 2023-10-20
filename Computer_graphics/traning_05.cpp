@@ -14,26 +14,28 @@ mt19937 eng(static_cast<mt19937::result_type>(seed));
 uniform_real_distribution<double> dist(0.0f, 1.0f);
 uniform_real_distribution<double> dist_x(-1.0f, 0.95f);
 uniform_real_distribution<double> dist_y(-1.0f, 0.95f);
-int selectedRectangle = -1; // 선택한 사각형의 인덱스
-bool isDragging = false; // 드래그 중인지 여부
-GLfloat xOffset, yOffset; // 드래그 시작 시 마우스 클릭 지점과 사각형의 좌측 상단 꼭지점 간의 오프셋
-
+int selectedRectangle = -1; 
+bool isDragging = false; 
+GLfloat xOffset, yOffset; 
 struct Rect {
-	GLfloat x1, y1, x2, y2; // 왼쪽 아래와 오른쪽 위 꼭지점 좌표
-	GLclampf r, g, b; // 색상
+	GLfloat x1, y1, x2, y2; 
+	GLclampf r, g, b; 
 	bool live = false;
-	bool selected = false; // 선택 여부
+	bool selected = false; 
 
 };
 
 struct Rect_erase {
-	GLfloat x1, y1, x2, y2; // 왼쪽 아래와 오른쪽 위 꼭지점 좌표
-	GLclampf r, g, b; // 색상
-	bool selected = false; // 선택 여부
+	GLfloat x1, y1, x2, y2; 
+	GLclampf r, g, b; 
+	bool selected = false; 
 	int num = 0;
 	bool existence = false;
 };
 
+struct Rect_col {
+	GLfloat left,right,top,bottom;
+};
 Rect_erase erase = {};
 
 vector<Rect> rects;
@@ -42,12 +44,11 @@ GLfloat r = 0.3f, g = 0.3f, b = 0.3f;
 
 bool IsTimerAlive = true;
 
-#include <iostream>
-
 GLvoid drawScene(GLvoid);
 GLvoid Reshape(int w, int h);
 void Keyboard(unsigned char key, int x, int y);
 GLfloat tempx1, tempx2, tempy1, tempy2;
+
 // 타이머
 void TimerFunction(int value)
 {
@@ -148,7 +149,10 @@ void Mouse(int button, int state, int m_x, int m_y)
 		erase.x2 = (tempx2 - 400) / 400;
 		erase.y2 = (300 - tempy2) / 300;
 		
-
+		glClearColor(r, g, b, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+		drawRectangles();
+		glutSwapBuffers();
 	}
 	else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
 	{
@@ -157,46 +161,82 @@ void Mouse(int button, int state, int m_x, int m_y)
 		selectedRectangle = -1;
 	}
 }
+bool isAABBCollision(const Rect_col& rect1, const Rect_col& rect2) {
 
+	if (rect1.right < rect2.left || rect1.left > rect2.right) {
+		return false; 
+	}
+
+	if (rect1.bottom < rect2.top || rect1.top > rect2.bottom) {
+		return false; 
+	}
+
+	return true;
+}
 
 void Motion(int x, int y)
 {
-	if (isDragging && selectedRectangle >= 0) {
+	if (isDragging == true) {
 
 		// 드래그 중일 때 사각형을 이동
-		Rect_erase& rect = erase;
+		Rect_erase& rect_e = erase;
 
-		GLfloat newX1 = x - 32 - 4 * erase.num;
-		GLfloat newY1 = y - 32 - 4 * erase.num;
-		GLfloat newX2 = x + 24 + 3 * erase.num;
-		GLfloat newY2 = y + 24 + 3 * erase.num;
+		tempx1 = x - 32 - 4 * erase.num;
+		tempy1 = y - 32 - 4 * erase.num;
+		tempx2 = x + 24 + 3 * erase.num;
+		tempy2 = y + 24 + 3 * erase.num;
 
-		rect.x1 = newX1;
-		rect.y1 = newY1;
-		rect.x2 = newX2;
-		rect.y2 = newY2;
+		erase.selected = true;
+
+
+		erase.x1 = (tempx1 - 400) / 400;
+		erase.y1 = (300 - tempy1) / 300;
+		erase.x2 = (tempx2 - 400) / 400;
+		erase.y2 = (300 - tempy2) / 300;
 		
-
+		
+		
+		//cout << erase.num << endl;
 		for (Rect& rect : rects) {
-				// 벽과의 충돌 검사
-				
+
+			Rect_col rectAABB;
+			rectAABB.left = rect.x1;
+			rectAABB.right = rect.x2;
+			rectAABB.top = rect.y1;
+			rectAABB.bottom = rect.y2;
+
+			Rect_col eraseAABB;
+			eraseAABB.left = erase.x1;
+			eraseAABB.right = erase.x2;
+			eraseAABB.bottom = erase.y1;
+			eraseAABB.top = erase.y2;
+
+			if (isAABBCollision(eraseAABB, rectAABB)) {
+				rect.x1 = 1000;
+				rect.y1 = 1000;
+				rect.y2 = 1000;
+				rect.x2 = 1000;
+
+				rect.live = false;
+				rect.selected = false;
+				erase.num++;
 			}
+		}
 
 		glClearColor(r, g, b, 1.0f); 
 		glClear(GL_COLOR_BUFFER_BIT);
 		drawRectangles();
-		glutSwapBuffers(); // 화면에 출력하기
+		glutSwapBuffers(); 
 	}
 }
-GLvoid drawScene() //--- 콜백 함수: 그리기 콜백 함수 
+GLvoid drawScene() 
 {
-	glClearColor(r, g, b, 1.0f); // 바탕색을 ‘blue’ 로 지정
-	glClear(GL_COLOR_BUFFER_BIT); // 설정된 색으로 전체를 칠하기
-	// 그리기 부분 구현: 그리기 관련 부분이 여기에 포함된다.
+	glClearColor(r, g, b, 1.0f); 
+	glClear(GL_COLOR_BUFFER_BIT); 
 	
 	drawRectangles();
 
-	glutSwapBuffers(); // 화면에 출력하기
+	glutSwapBuffers(); 
 }
 void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정 
 { //--- 윈도우 생성하기
