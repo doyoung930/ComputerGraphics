@@ -657,7 +657,7 @@ GLvoid drawScene()
 	BaseLine();
 	DrawDot1();
 	if(area1 ==1 )	DrawDot1();
-	//else if (area1 == 2) DrawLine1();
+	else if (area1 == 2) DrawLine1();
 	else if (area1 == 3)DrawTri1();
 	else if (area1 == 4)DrawRec1();
 	else if (area1 == 5)DrawPen1();
