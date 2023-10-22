@@ -1095,18 +1095,10 @@ void Keyboard(unsigned char key, int x, int y)
 {
 	switch (key) {
 	case 'p':
-		s_draw_method = 0;
-		for (auto& dot : dots)
-			dot.clear();
-		for (auto& line : lines)
-			line.clear();
+		
 		break;
 	case 'l':
-		s_draw_method = 1;
-		for (auto& dot : dots)
-			dot.clear();
-		for (auto& line : lines)
-			line.clear();
+		
 		break;
 	case '1': 
 		for (auto& dot : dots)

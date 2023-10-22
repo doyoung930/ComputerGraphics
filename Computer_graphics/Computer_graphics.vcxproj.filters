@@ -54,7 +54,7 @@
     <ClCompile Include="traning_09.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="traning_17.cpp">
+    <ClCompile Include="temp.cpp">
       <Filter>소스 파일\comg</Filter>
     </ClCompile>
     <ClCompile Include="traning_10.cpp">
