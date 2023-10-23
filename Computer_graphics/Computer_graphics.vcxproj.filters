@@ -16,6 +16,9 @@
     <Filter Include="소스 파일\comg">
       <UniqueIdentifier>{3028a1e3-8106-4c51-b648-3ac5cd3f2cf3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\seongtae">
+      <UniqueIdentifier>{53c6f4ef-6ddf-4322-965f-e2f3400fdf23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -63,11 +66,47 @@
     <ClCompile Include="traning_11.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="training_12.cpp">
+    <ClCompile Include="traning_12.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="traning_13.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="seongtae\CCube.cpp">
+      <Filter>소스 파일\seongtae</Filter>
+    </ClCompile>
+    <ClCompile Include="seongtae\CObject.cpp">
+      <Filter>소스 파일\seongtae</Filter>
+    </ClCompile>
+    <ClCompile Include="seongtae\CScene.cpp">
+      <Filter>소스 파일\seongtae</Filter>
+    </ClCompile>
+    <ClCompile Include="seongtae\frame23.cpp">
+      <Filter>소스 파일\seongtae</Filter>
+    </ClCompile>
+    <ClCompile Include="seongtae\Framework.cpp">
+      <Filter>소스 파일\seongtae</Filter>
+    </ClCompile>
+    <ClCompile Include="seongtae\num21.cpp">
+      <Filter>소스 파일\seongtae</Filter>
+    </ClCompile>
+    <ClCompile Include="seongtae\num22.cpp">
+      <Filter>소스 파일\seongtae</Filter>
+    </ClCompile>
+    <ClCompile Include="seongtae\num23.cpp">
+      <Filter>소스 파일\seongtae</Filter>
+    </ClCompile>
+    <ClCompile Include="seongtae\num17.cpp">
+      <Filter>소스 파일\seongtae</Filter>
+    </ClCompile>
+    <ClCompile Include="seongtae\num18.cpp">
+      <Filter>소스 파일\seongtae</Filter>
+    </ClCompile>
+    <ClCompile Include="seongtae\num19.cpp">
+      <Filter>소스 파일\seongtae</Filter>
+    </ClCompile>
+    <ClCompile Include="seongtae\num20.cpp">
+      <Filter>소스 파일\seongtae</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +115,30 @@
     </ClInclude>
     <ClInclude Include="num21.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="seongtae\CCube.h">
+      <Filter>소스 파일\seongtae</Filter>
+    </ClInclude>
+    <ClInclude Include="seongtae\CObject.h">
+      <Filter>소스 파일\seongtae</Filter>
+    </ClInclude>
+    <ClInclude Include="seongtae\CScene.h">
+      <Filter>소스 파일\seongtae</Filter>
+    </ClInclude>
+    <ClInclude Include="seongtae\Framework.h">
+      <Filter>소스 파일\seongtae</Filter>
+    </ClInclude>
+    <ClInclude Include="seongtae\num21.h">
+      <Filter>소스 파일\seongtae</Filter>
+    </ClInclude>
+    <ClInclude Include="seongtae\num22.h">
+      <Filter>소스 파일\seongtae</Filter>
+    </ClInclude>
+    <ClInclude Include="seongtae\num23.h">
+      <Filter>소스 파일\seongtae</Filter>
+    </ClInclude>
+    <ClInclude Include="seongtae\stdafx.h">
+      <Filter>소스 파일\seongtae</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

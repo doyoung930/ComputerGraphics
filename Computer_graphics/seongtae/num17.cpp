@@ -1,4 +1,4 @@
-ï»¿#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 #define WinWidth 800
 #define WinHeight 800
 #include <iostream>
@@ -47,8 +47,8 @@ GLfloat LineShape[6][3] = {
     {0.0f, 0.0f, 1.0f},
 };
 GLfloat CubeShape[12][3] = {
-    //ë’·ë©´
-    //ë°˜ì‹œê³„
+    //µÞ¸é
+    //¹Ý½Ã°è
   { 0.5f, -0.5f, -0.5f },
   { -0.5f, -0.5f, -0.5f },
   { -0.5f, 0.5f, -0.5f },
@@ -57,7 +57,7 @@ GLfloat CubeShape[12][3] = {
   { 0.5f, -0.5f, -0.5f },
   { -0.5f, 0.5f, -0.5f },
 
-  //ì‹œê³„
+  //½Ã°è
   /* { 0.5f, -0.5f, -0.5f },
   { -0.5f, -0.5f, -0.5f },
   { 0.5f, 0.5f, -0.5f },
@@ -66,28 +66,28 @@ GLfloat CubeShape[12][3] = {
   { -0.5f, 0.5f, -0.5f },
   { 0.5f, 0.5f, -0.5f },*/
 
-  //ì•„ëž˜
-  //ë°˜ì‹œê³„
-   { -0.5f, -0.5f, 0.5f },
-  { -0.5f, -0.5f, -0.5f },
-  { 0.5f, -0.5f, -0.5f },
-
-  { -0.5f, -0.5f, 0.5f },
-  { 0.5f, -0.5f, -0.5f },
-  { 0.5f, -0.5f, 0.5f },
-
-  //ì‹œê³„
-  /* { -0.5f, -0.5f, 0.5f },
+    //¾Æ·¡
+    //¹Ý½Ã°è
+     { -0.5f, -0.5f, 0.5f },
+    { -0.5f, -0.5f, -0.5f },
     { 0.5f, -0.5f, -0.5f },
-  { -0.5f, -0.5f, -0.5f },
 
-  { -0.5f, -0.5f, 0.5f },
-  { 0.5f, -0.5f, 0.5f },
-  { 0.5f, -0.5f, -0.5f },*/
+    { -0.5f, -0.5f, 0.5f },
+    { 0.5f, -0.5f, -0.5f },
+    { 0.5f, -0.5f, 0.5f },
+
+    //½Ã°è
+    /* { -0.5f, -0.5f, 0.5f },
+      { 0.5f, -0.5f, -0.5f },
+    { -0.5f, -0.5f, -0.5f },
+
+    { -0.5f, -0.5f, 0.5f },
+    { 0.5f, -0.5f, 0.5f },
+    { 0.5f, -0.5f, -0.5f },*/
 };
 GLfloat CubeTop[6][3] = {
-    //ìœ„
-    //ë°˜ì‹œê³„
+    //À§
+    //¹Ý½Ã°è
     {-0.5f, 0.5f, 0.5f},
     { 0.5f, 0.5f, 0.5f },
     { -0.5f, 0.5f, -0.5f },
@@ -95,39 +95,39 @@ GLfloat CubeTop[6][3] = {
     { 0.5f, 0.5f, -0.5f },
     { -0.5f, 0.5f, -0.5f },
 
-    //ì‹œê³„
+    //½Ã°è
     /*{-0.5f, 0.5f, 0.5f},
     { -0.5f, 0.5f, -0.5f },
     { 0.5f, 0.5f, 0.5f },
-
+    
     { 0.5f, 0.5f, 0.5f },
     { -0.5f, 0.5f, -0.5f },
     { 0.5f, 0.5f, -0.5f },*/
-
+    
 };
 GLfloat CubeFront[6][3] = {
-    //ì•žë©´
-    //ë°˜ì‹œê³„
+    //¾Õ¸é
+    //¹Ý½Ã°è
     { -0.5f, -0.5f, 0.5f },
     { 0.5f, -0.5f, 0.5f },
     {-0.5f, 0.5f, 0.5f},
     { 0.5f, -0.5f, 0.5f },
     { 0.5f, 0.5f, 0.5f },
     {-0.5f, 0.5f, 0.5f},
-    //ì‹œê³„
+    //½Ã°è
    /* { -0.5f, -0.5f, 0.5f },
     {-0.5f, 0.5f, 0.5f},
     { 0.5f, -0.5f, 0.5f },
-
+    
     { 0.5f, -0.5f, 0.5f },
     {-0.5f, 0.5f, 0.5f},
     { 0.5f, 0.5f, 0.5f },*/
-
+    
 
 };
 GLfloat CubeSide[12][3] = {
-    //ì™¼ìª½
-    //ë°˜ì‹œê³„
+    //¿ÞÂÊ
+    //¹Ý½Ã°è
     { -0.5f, -0.5f, -0.5f },
     {-0.5f, 0.5f, 0.5f},
     { -0.5f, 0.5f, -0.5f },
@@ -135,60 +135,60 @@ GLfloat CubeSide[12][3] = {
     { -0.5f, -0.5f, 0.5f },
     {-0.5f, 0.5f, 0.5f},
 
-    //ì‹œê³„
+    //½Ã°è
    /* { -0.5f, -0.5f, -0.5f },
     { -0.5f, 0.5f, -0.5f },
     {-0.5f, 0.5f, 0.5f},
-
+    
     { -0.5f, -0.5f, -0.5f },
     {-0.5f, 0.5f, 0.5f},
     { -0.5f, -0.5f, 0.5f },
     */
 
-    //ì˜¤ë¥¸ìª½
-    //ì‹œê³„
-      /*{ 0.5f, -0.5f, 0.5f },
-      { 0.5f, 0.5f, 0.5f },
-      { 0.5f, -0.5f, -0.5f },
-      { 0.5f, -0.5f, -0.5f },
-      { 0.5f, 0.5f, 0.5f },
-      { 0.5f, 0.5f, -0.5f },*/
-
-      //ë°˜ì‹œê³„
-     { 0.5f, -0.5f, 0.5f },
-       { 0.5f, -0.5f, -0.5f },
-       { 0.5f, 0.5f, 0.5f },
-       { 0.5f, -0.5f, -0.5f },
-       { 0.5f, 0.5f, -0.5f },
-       { 0.5f, 0.5f, 0.5f },
-
+  //¿À¸¥ÂÊ
+  //½Ã°è
+    /*{ 0.5f, -0.5f, 0.5f },
+    { 0.5f, 0.5f, 0.5f },
+    { 0.5f, -0.5f, -0.5f },
+    { 0.5f, -0.5f, -0.5f },
+    { 0.5f, 0.5f, 0.5f },
+    { 0.5f, 0.5f, -0.5f },*/
+    
+   //¹Ý½Ã°è
+  { 0.5f, -0.5f, 0.5f },
+    { 0.5f, -0.5f, -0.5f },
+    { 0.5f, 0.5f, 0.5f },
+    { 0.5f, -0.5f, -0.5f },
+    { 0.5f, 0.5f, -0.5f },
+    { 0.5f, 0.5f, 0.5f },
+ 
 };
 GLfloat TetraSide1[3][3] = {
-    //ì•žë©´
+    //¾Õ¸é
     {-0.5, -0.5, 0.5},
     {0.5, -0.5, 0.5},
     {0.0, 0.5, 0.0},
 };
 GLfloat TetraSide2[3][3] = {
-    //ë’·ë©´
+    //µÞ¸é
     {-0.5, -0.5, -0.5},
     {0.0, 0.5, 0.0},
     {0.5, -0.5, -0.5},
 };
 GLfloat TetraSide3[3][3] = {
-    //ì™¼ìª½
+    //¿ÞÂÊ
     {-0.5, -0.5, -0.5},
     {-0.5, -0.5, 0.5},
     {0.0, 0.5, 0.0},
 };
 GLfloat TetraSide4[3][3] = {
-    //ì˜¤ë¥¸ìª½
+    //¿À¸¥ÂÊ
     {0.5, -0.5, -0.5},
     {0.5, -0.5, 0.5},
     {0.0, 0.5, 0.0},
 };
 GLfloat TetraBase[6][3] = {
-    //ë°”ë‹¥
+    //¹Ù´Ú
     {-0.5, -0.5, -0.5},
     {0.5, -0.5, -0.5},
     {0.5, -0.5, 0.5},
@@ -213,7 +213,7 @@ GLfloat Cubecolors[12][3] = {
     {1.0, 1.0, 0.0},
     {1.0, 1.0, 0.0},
     {1.0, 1.0, 0.0},
-
+   
     {0.0, 1.0, 1.0},
     {0.0, 1.0, 1.0},
     {0.0, 1.0, 1.0},
@@ -299,7 +299,7 @@ void make_vertexShader() {
     if (!result)
     {
         glGetShaderInfoLog(vertexShader, 512, NULL, errorLog);
-        cerr << "ERROR: vertex shader ì»´íŒŒì¼ ì‹¤íŒ¨\n" << errorLog << endl;
+        cerr << "ERROR: vertex shader ÄÄÆÄÀÏ ½ÇÆÐ\n" << errorLog << endl;
         return;
     }
 }
@@ -319,7 +319,7 @@ void make_fragmentShader() {
     if (!result)
     {
         glGetShaderInfoLog(fragmentShader, 512, NULL, errorLog);
-        cerr << "ERROR: fragment shader ì»´íŒŒì¼ ì‹¤íŒ¨\n" << errorLog << endl;
+        cerr << "ERROR: fragment shader ÄÄÆÄÀÏ ½ÇÆÐ\n" << errorLog << endl;
         return;
     }
 
@@ -328,11 +328,11 @@ void make_fragmentShader() {
 void InitBuffer() {
     for (int i = 0; i < 10; ++i) {
         if (i == 0) {
-            glGenVertexArrays(1, &vao[0]); //--- VAO ë¥¼ ì§€ì •í•˜ê³  í• ë‹¹í•˜ê¸°
+            glGenVertexArrays(1, &vao[0]); //--- VAO ¸¦ ÁöÁ¤ÇÏ°í ÇÒ´çÇÏ±â
 
-            glBindVertexArray(vao[0]); //--- VAOë¥¼ ë°”ì¸ë“œí•˜ê¸°
+            glBindVertexArray(vao[0]); //--- VAO¸¦ ¹ÙÀÎµåÇÏ±â
 
-            glGenBuffers(10, vbo); //--- 2ê°œì˜ VBOë¥¼ ì§€ì •í•˜ê³  í• ë‹¹í•˜ê¸°
+            glGenBuffers(10, vbo); //--- 2°³ÀÇ VBO¸¦ ÁöÁ¤ÇÏ°í ÇÒ´çÇÏ±â
 
             glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
             glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(GLfloat), LineShape, GL_STATIC_DRAW);
@@ -344,11 +344,11 @@ void InitBuffer() {
             glEnableVertexAttribArray(1);
         }
         else if (i == 1) {
-            glGenVertexArrays(1, &vao[1]); //--- VAO ë¥¼ ì§€ì •í•˜ê³  í• ë‹¹í•˜ê¸°
+            glGenVertexArrays(1, &vao[1]); //--- VAO ¸¦ ÁöÁ¤ÇÏ°í ÇÒ´çÇÏ±â
 
-            glBindVertexArray(vao[1]); //--- VAOë¥¼ ë°”ì¸ë“œí•˜ê¸°
+            glBindVertexArray(vao[1]); //--- VAO¸¦ ¹ÙÀÎµåÇÏ±â
 
-            glGenBuffers(10, vbo); //--- 2ê°œì˜ VBOë¥¼ ì§€ì •í•˜ê³  í• ë‹¹í•˜ê¸°
+            glGenBuffers(10, vbo); //--- 2°³ÀÇ VBO¸¦ ÁöÁ¤ÇÏ°í ÇÒ´çÇÏ±â
 
             glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
             glBufferData(GL_ARRAY_BUFFER, 36 * sizeof(GLfloat), CubeShape, GL_STATIC_DRAW);
@@ -360,11 +360,11 @@ void InitBuffer() {
             glEnableVertexAttribArray(1);
         }
         else if (i == 2) {
-            glGenVertexArrays(1, &vao[2]); //--- VAO ë¥¼ ì§€ì •í•˜ê³  í• ë‹¹í•˜ê¸°
+            glGenVertexArrays(1, &vao[2]); //--- VAO ¸¦ ÁöÁ¤ÇÏ°í ÇÒ´çÇÏ±â
 
-            glBindVertexArray(vao[2]); //--- VAOë¥¼ ë°”ì¸ë“œí•˜ê¸°
+            glBindVertexArray(vao[2]); //--- VAO¸¦ ¹ÙÀÎµåÇÏ±â
 
-            glGenBuffers(10, vbo); //--- 2ê°œì˜ VBOë¥¼ ì§€ì •í•˜ê³  í• ë‹¹í•˜ê¸°
+            glGenBuffers(10, vbo); //--- 2°³ÀÇ VBO¸¦ ÁöÁ¤ÇÏ°í ÇÒ´çÇÏ±â
 
             glBindBuffer(GL_ARRAY_BUFFER, vbo[4]);
             glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(GLfloat), CubeFront, GL_STATIC_DRAW);
@@ -376,11 +376,11 @@ void InitBuffer() {
             glEnableVertexAttribArray(1);
         }
         else if (i == 3) {
-            glGenVertexArrays(1, &vao[3]); //--- VAO ë¥¼ ì§€ì •í•˜ê³  í• ë‹¹í•˜ê¸°
+            glGenVertexArrays(1, &vao[3]); //--- VAO ¸¦ ÁöÁ¤ÇÏ°í ÇÒ´çÇÏ±â
 
-            glBindVertexArray(vao[3]); //--- VAOë¥¼ ë°”ì¸ë“œí•˜ê¸°
+            glBindVertexArray(vao[3]); //--- VAO¸¦ ¹ÙÀÎµåÇÏ±â
 
-            glGenBuffers(10, vbo); //--- 2ê°œì˜ VBOë¥¼ ì§€ì •í•˜ê³  í• ë‹¹í•˜ê¸°
+            glGenBuffers(10, vbo); //--- 2°³ÀÇ VBO¸¦ ÁöÁ¤ÇÏ°í ÇÒ´çÇÏ±â
 
             glBindBuffer(GL_ARRAY_BUFFER, vbo[6]);
             glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(GLfloat), CubeTop, GL_STATIC_DRAW);
@@ -392,11 +392,11 @@ void InitBuffer() {
             glEnableVertexAttribArray(1);
         }
         else if (i == 4) {
-            glGenVertexArrays(1, &vao[4]); //--- VAO ë¥¼ ì§€ì •í•˜ê³  í• ë‹¹í•˜ê¸°
+            glGenVertexArrays(1, &vao[4]); //--- VAO ¸¦ ÁöÁ¤ÇÏ°í ÇÒ´çÇÏ±â
 
-            glBindVertexArray(vao[4]); //--- VAOë¥¼ ë°”ì¸ë“œí•˜ê¸°
+            glBindVertexArray(vao[4]); //--- VAO¸¦ ¹ÙÀÎµåÇÏ±â
 
-            glGenBuffers(10, vbo); //--- 2ê°œì˜ VBOë¥¼ ì§€ì •í•˜ê³  í• ë‹¹í•˜ê¸°
+            glGenBuffers(10, vbo); //--- 2°³ÀÇ VBO¸¦ ÁöÁ¤ÇÏ°í ÇÒ´çÇÏ±â
 
             glBindBuffer(GL_ARRAY_BUFFER, vbo[8]);
             glBufferData(GL_ARRAY_BUFFER, 36 * sizeof(GLfloat), CubeSide, GL_STATIC_DRAW);
@@ -408,11 +408,11 @@ void InitBuffer() {
             glEnableVertexAttribArray(1);
         }
         else if (i == 5) {
-            glGenVertexArrays(1, &vao[5]); //--- VAO ë¥¼ ì§€ì •í•˜ê³  í• ë‹¹í•˜ê¸°
+            glGenVertexArrays(1, &vao[5]); //--- VAO ¸¦ ÁöÁ¤ÇÏ°í ÇÒ´çÇÏ±â
 
-            glBindVertexArray(vao[5]); //--- VAOë¥¼ ë°”ì¸ë“œí•˜ê¸°
+            glBindVertexArray(vao[5]); //--- VAO¸¦ ¹ÙÀÎµåÇÏ±â
 
-            glGenBuffers(20, vbo); //--- 2ê°œì˜ VBOë¥¼ ì§€ì •í•˜ê³  í• ë‹¹í•˜ê¸°
+            glGenBuffers(20, vbo); //--- 2°³ÀÇ VBO¸¦ ÁöÁ¤ÇÏ°í ÇÒ´çÇÏ±â
 
             glBindBuffer(GL_ARRAY_BUFFER, vbo[10]);
             glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), TetraSide1, GL_STATIC_DRAW);
@@ -424,11 +424,11 @@ void InitBuffer() {
             glEnableVertexAttribArray(1);
         }
         else if (i == 6) {
-            glGenVertexArrays(1, &vao[6]); //--- VAO ë¥¼ ì§€ì •í•˜ê³  í• ë‹¹í•˜ê¸°
+            glGenVertexArrays(1, &vao[6]); //--- VAO ¸¦ ÁöÁ¤ÇÏ°í ÇÒ´çÇÏ±â
 
-            glBindVertexArray(vao[6]); //--- VAOë¥¼ ë°”ì¸ë“œí•˜ê¸°
+            glBindVertexArray(vao[6]); //--- VAO¸¦ ¹ÙÀÎµåÇÏ±â
 
-            glGenBuffers(20, vbo); //--- 2ê°œì˜ VBOë¥¼ ì§€ì •í•˜ê³  í• ë‹¹í•˜ê¸°
+            glGenBuffers(20, vbo); //--- 2°³ÀÇ VBO¸¦ ÁöÁ¤ÇÏ°í ÇÒ´çÇÏ±â
 
             glBindBuffer(GL_ARRAY_BUFFER, vbo[12]);
             glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), TetraSide2, GL_STATIC_DRAW);
@@ -440,60 +440,60 @@ void InitBuffer() {
             glEnableVertexAttribArray(1);
         }
         else if (i == 7) {
-            glGenVertexArrays(1, &vao[7]); //--- VAO ë¥¼ ì§€ì •í•˜ê³  í• ë‹¹í•˜ê¸°
+        glGenVertexArrays(1, &vao[7]); //--- VAO ¸¦ ÁöÁ¤ÇÏ°í ÇÒ´çÇÏ±â
 
-            glBindVertexArray(vao[7]); //--- VAOë¥¼ ë°”ì¸ë“œí•˜ê¸°
+        glBindVertexArray(vao[7]); //--- VAO¸¦ ¹ÙÀÎµåÇÏ±â
 
-            glGenBuffers(20, vbo); //--- 2ê°œì˜ VBOë¥¼ ì§€ì •í•˜ê³  í• ë‹¹í•˜ê¸°
+        glGenBuffers(20, vbo); //--- 2°³ÀÇ VBO¸¦ ÁöÁ¤ÇÏ°í ÇÒ´çÇÏ±â
 
-            glBindBuffer(GL_ARRAY_BUFFER, vbo[14]);
-            glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), TetraSide3, GL_STATIC_DRAW);
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-            glEnableVertexAttribArray(0);
-            glBindBuffer(GL_ARRAY_BUFFER, vbo[15]);
-            glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), Sidecolors3, GL_STATIC_DRAW);
-            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-            glEnableVertexAttribArray(1);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo[14]);
+        glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), TetraSide3, GL_STATIC_DRAW);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo[15]);
+        glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), Sidecolors3, GL_STATIC_DRAW);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray(1);
         }
         else if (i == 8) {
-            glGenVertexArrays(1, &vao[8]); //--- VAO ë¥¼ ì§€ì •í•˜ê³  í• ë‹¹í•˜ê¸°
+        glGenVertexArrays(1, &vao[8]); //--- VAO ¸¦ ÁöÁ¤ÇÏ°í ÇÒ´çÇÏ±â
 
-            glBindVertexArray(vao[8]); //--- VAOë¥¼ ë°”ì¸ë“œí•˜ê¸°
+        glBindVertexArray(vao[8]); //--- VAO¸¦ ¹ÙÀÎµåÇÏ±â
 
-            glGenBuffers(20, vbo); //--- 2ê°œì˜ VBOë¥¼ ì§€ì •í•˜ê³  í• ë‹¹í•˜ê¸°
+        glGenBuffers(20, vbo); //--- 2°³ÀÇ VBO¸¦ ÁöÁ¤ÇÏ°í ÇÒ´çÇÏ±â
 
-            glBindBuffer(GL_ARRAY_BUFFER, vbo[16]);
-            glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), TetraSide4, GL_STATIC_DRAW);
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-            glEnableVertexAttribArray(0);
-            glBindBuffer(GL_ARRAY_BUFFER, vbo[17]);
-            glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), Sidecolors4, GL_STATIC_DRAW);
-            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-            glEnableVertexAttribArray(1);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo[16]);
+        glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), TetraSide4, GL_STATIC_DRAW);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo[17]);
+        glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), Sidecolors4, GL_STATIC_DRAW);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray(1);
         }
         else if (i == 9) {
-            glGenVertexArrays(1, &vao[9]); //--- VAO ë¥¼ ì§€ì •í•˜ê³  í• ë‹¹í•˜ê¸°
+        glGenVertexArrays(1, &vao[9]); //--- VAO ¸¦ ÁöÁ¤ÇÏ°í ÇÒ´çÇÏ±â
 
-            glBindVertexArray(vao[9]); //--- VAOë¥¼ ë°”ì¸ë“œí•˜ê¸°
+        glBindVertexArray(vao[9]); //--- VAO¸¦ ¹ÙÀÎµåÇÏ±â
 
-            glGenBuffers(20, vbo); //--- 2ê°œì˜ VBOë¥¼ ì§€ì •í•˜ê³  í• ë‹¹í•˜ê¸°
+        glGenBuffers(20, vbo); //--- 2°³ÀÇ VBO¸¦ ÁöÁ¤ÇÏ°í ÇÒ´çÇÏ±â
 
-            glBindBuffer(GL_ARRAY_BUFFER, vbo[18]);
-            glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(GLfloat), TetraBase, GL_STATIC_DRAW);
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-            glEnableVertexAttribArray(0);
-            glBindBuffer(GL_ARRAY_BUFFER, vbo[19]);
-            glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(GLfloat), Basecolors, GL_STATIC_DRAW);
-            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-            glEnableVertexAttribArray(1);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo[18]);
+        glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(GLfloat), TetraBase, GL_STATIC_DRAW);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo[19]);
+        glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(GLfloat), Basecolors, GL_STATIC_DRAW);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray(1);
         }
     }
 }
 
 void InitShader()
 {
-    make_vertexShader(); //--- ë²„í…ìŠ¤ ì„¸ì´ë” ë§Œë“¤ê¸°
-    make_fragmentShader(); //--- í”„ëž˜ê·¸ë¨¼íŠ¸ ì„¸ì´ë” ë§Œë“¤ê¸°
+    make_vertexShader(); //--- ¹öÅØ½º ¼¼ÀÌ´õ ¸¸µé±â
+    make_fragmentShader(); //--- ÇÁ·¡±×¸ÕÆ® ¼¼ÀÌ´õ ¸¸µé±â
     //-- shader Program
 
     for (int i = 0; i < 6; ++i) {
@@ -503,38 +503,38 @@ void InitShader()
         glLinkProgram(s_program[i]);
         //  checkCompileErrors(s_program, "PROGRAM");
 
-          //--- ì„¸ì´ë” ì‚­ì œí•˜ê¸°
+          //--- ¼¼ÀÌ´õ »èÁ¦ÇÏ±â
         glDeleteShader(vertexShader);
         glDeleteShader(fragmentShader);
-        //--- Shader Program ì‚¬ìš©í•˜ê¸°
+        //--- Shader Program »ç¿ëÇÏ±â
         glUseProgram(s_program[i]);
     }
 }
 
 void main(int argc, char** argv)
 {
-    glutInit(&argc, argv); // glut ì´ˆê¸°í™”
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH); // ë””ìŠ¤í”Œë ˆì´ ëª¨ë“œ ì„¤ì •
-    glutInitWindowPosition(0, 0); // ìœˆë„ìš°ì˜ ìœ„ì¹˜ ì§€ì •
-    glutInitWindowSize(WinWidth, WinHeight); // ìœˆë„ìš°ì˜ í¬ê¸° ì§€ì •
-    glutCreateWindow("Example17"); // ìœˆë„ìš° ìƒì„±(ìœˆë„ìš° ì´ë¦„)
-    //--- GLEW ì´ˆê¸°í™”í•˜ê¸°
+    glutInit(&argc, argv); // glut ÃÊ±âÈ­
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH); // µð½ºÇÃ·¹ÀÌ ¸ðµå ¼³Á¤
+    glutInitWindowPosition(0, 0); // À©µµ¿ìÀÇ À§Ä¡ ÁöÁ¤
+    glutInitWindowSize(WinWidth, WinHeight); // À©µµ¿ìÀÇ Å©±â ÁöÁ¤
+    glutCreateWindow("Example17"); // À©µµ¿ì »ý¼º(À©µµ¿ì ÀÌ¸§)
+    //--- GLEW ÃÊ±âÈ­ÇÏ±â
     glewExperimental = GL_TRUE;
     glewInit();
 
-    //--- ì„¸ì´ë” ì½ì–´ì™€ì„œ ì„¸ì´ë” í”„ë¡œê·¸ëž¨ ë§Œë“¤ê¸°
+    //--- ¼¼ÀÌ´õ ÀÐ¾î¿Í¼­ ¼¼ÀÌ´õ ÇÁ·Î±×·¥ ¸¸µé±â
     InitShader();
     InitBuffer();
+   
 
-
-    glutDisplayFunc(drawScene); // ì¶œë ¥ í•¨ìˆ˜ì˜ ì§€ì •
-    glutReshapeFunc(Reshape); // ë‹¤ì‹œ ê·¸ë¦¬ê¸° í•¨ìˆ˜ ì§€ì •
+    glutDisplayFunc(drawScene); // Ãâ·Â ÇÔ¼öÀÇ ÁöÁ¤
+    glutReshapeFunc(Reshape); // ´Ù½Ã ±×¸®±â ÇÔ¼ö ÁöÁ¤
     glutKeyboardFunc(KeyBoard);
-    glutMainLoop(); // ì´ë²¤íŠ¸ ì²˜ë¦¬ ì‹œìž‘ 
+    glutMainLoop(); // ÀÌº¥Æ® Ã³¸® ½ÃÀÛ 
 }
 
 GLvoid drawScene()
-{
+{    
     if (persproj) {
         glClearDepth(1.0f);
         glDepthFunc(GL_LESS);
@@ -556,8 +556,8 @@ GLvoid drawScene()
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-    //xyzì¶•-------------------------------------------------------------------------------------------
+   
+    //xyzÃà-------------------------------------------------------------------------------------------
     glUseProgram(s_program[0]);
     glm::mat4 TR = glm::mat4(1.0f);
     glm::mat4 RX = glm::mat4(1.0f);
@@ -574,7 +574,7 @@ GLvoid drawScene()
     }
     else if (orthoproj) {
         view = glm::lookAt(cameraPos, cameraDirection, cameraUp);
-        projection = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 10.0f, -50.0f);
+        projection = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 10.0f, -50.0f); 
     }
     TR = RX * RY;
 
@@ -589,16 +589,16 @@ GLvoid drawScene()
     glBindVertexArray(vao[0]);
     glDrawArrays(GL_LINES, 0, 6);
 
-    //ë„í˜•-------------------------------------------------------------------------------------------
+    //µµÇü-------------------------------------------------------------------------------------------
     glUseProgram(s_program[1]);
     glm::mat4 TR2 = glm::mat4(1.0f);
     glm::mat4 RY2 = glm::mat4(1.0f);
     glm::mat4 S2 = glm::mat4(1.0f);
-
+ 
 
     RY2 = glm::rotate(RY2, glm::radians(rotY), glm::vec3(0.0, 1.0, 0.0));
     S2 = glm::scale(S2, glm::vec3(scale, scale, scale));
-
+  
     TR2 = TR * RY2 * S2;
 
     unsigned int modelLocation2 = glGetUniformLocation(s_program[1], "modelTransform");
@@ -608,23 +608,23 @@ GLvoid drawScene()
     glUniformMatrix4fv(modelLocation2, 1, GL_FALSE, glm::value_ptr(TR2));
     glUniformMatrix4fv(viewLocation2, 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(projectionLocation2, 1, GL_FALSE, glm::value_ptr(projection));
-
+    
 
     if (shape) {
-
+        
     }
     else {
         glBindVertexArray(vao[1]);
         glPolygonMode(GL_FRONT, GL_FILL);
         glDrawArrays(GL_TRIANGLES, 0, 12);
     }
-    //ì•žë©´------------------------------------------------------------------------------------------------
+    //¾Õ¸é------------------------------------------------------------------------------------------------
     glUseProgram(s_program[2]);
 
     glm::mat4 MT = glm::mat4(1.0f);
     glm::mat4 FrontRotate = glm::mat4(1.0f);
 
-    //ë¶€ê³ ì´ìžìŠ¤
+    //ºÎ°íÀÌÀÚ½º
     FrontRotate = glm::translate(FrontRotate, glm::vec3(0.0, -0.5, 0.5));
     FrontRotate = glm::rotate(FrontRotate, glm::radians(rotF), glm::vec3(1.0, 0.0, 0.0));
     FrontRotate = glm::translate(FrontRotate, glm::vec3(0.0, 0.5, -0.5));
@@ -644,11 +644,11 @@ GLvoid drawScene()
     }
     else {
         glBindVertexArray(vao[2]);
-
+        
         glPolygonMode(GL_FRONT, GL_FILL);
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
-    //ìœ—ë©´--------------------------------------------------------------------------------------------------
+    //À­¸é--------------------------------------------------------------------------------------------------
     glUseProgram(s_program[3]);
     glm::mat4 MT2 = glm::mat4(1.0f);
     glm::mat4 TopRotate = glm::mat4(1.0f);
@@ -672,12 +672,12 @@ GLvoid drawScene()
     }
     else {
         glBindVertexArray(vao[3]);
-
+        
         glPolygonMode(GL_FRONT, GL_FILL);
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
-
-    //ì˜†ë©´--------------------------------------------------------------------------------------------------------------
+    
+    //¿·¸é--------------------------------------------------------------------------------------------------------------
     glUseProgram(s_program[4]);
     glm::mat4 MT3 = glm::mat4(1.0f);
     glm::mat4 SideTrans = glm::mat4(1.0f);
@@ -699,11 +699,11 @@ GLvoid drawScene()
     }
     else {
         glBindVertexArray(vao[4]);
-
+        
         glPolygonMode(GL_FRONT, GL_FILL);
         glDrawArrays(GL_TRIANGLES, 0, 12);
     }
-    //ì‚¬ê°ë¿”---------------------------------------------------------------------------------------------------------------------
+    //»ç°¢»Ô---------------------------------------------------------------------------------------------------------------------
     glUseProgram(s_program[5]);
     glm::mat4 MT4 = glm::mat4(1.0f);
     glm::mat4 MT5 = glm::mat4(1.0f);
@@ -769,10 +769,10 @@ GLvoid drawScene()
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
 
-    glutSwapBuffers(); // í™”ë©´ì— ì¶œë ¥í•˜ê¸°
+    glutSwapBuffers(); // È­¸é¿¡ Ãâ·ÂÇÏ±â
 }
 
-GLvoid Reshape(int w, int h) //--- ì½œë°± í•¨ìˆ˜: ë‹¤ì‹œ ê·¸ë¦¬ê¸° ì½œë°± í•¨ìˆ˜ 
+GLvoid Reshape(int w, int h) //--- ÄÝ¹é ÇÔ¼ö: ´Ù½Ã ±×¸®±â ÄÝ¹é ÇÔ¼ö 
 {
     glViewport(0, 0, w, h);
 }
@@ -856,7 +856,7 @@ void KeyBoard(unsigned char key, int x, int y) {
         }
         break;
     case 'p':
-        //ì§ê°
+        //Á÷°¢
         if (orthoproj) {
             orthoproj = false;
         }
@@ -866,7 +866,7 @@ void KeyBoard(unsigned char key, int x, int y) {
         }
         break;
     case 'P':
-        //ì›ê·¼
+        //¿ø±Ù
         if (persproj) {
             persproj = false;
         }
@@ -886,7 +886,7 @@ void TimerFunction(int value) {
     if (rotY >= 360.0f) {
         rotY = 0.0f;
     }
-
+  
     if (rotateY) {
         glutTimerFunc(100, TimerFunction, 1);
     }
@@ -899,7 +899,7 @@ void TimerFunction2(int value) {
             rotateF = false;
             rotF = 0.0;
             return;
-        }
+        }    
     }
     else {
         rotF += 5.0;
