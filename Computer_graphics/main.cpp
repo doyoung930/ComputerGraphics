@@ -76,44 +76,7 @@ GLvoid Reshape(int w, int h) //--- 콜백 함수: 다시 그리기 콜백 함수
 void Keyboard(unsigned char key, int x, int y)
 {
 	switch (key) {
-	case 'c':
-		r = 0.0f;
-		g = 1.0f;
-		b = 1.0f;
-		break;
-	case 'm':
-		r = 1.0f;
-		g = 0.0f;
-		b = 1.0f;
-		break;
-	case 'y':
-		r = 1.0f;
-		g = 1.0f;
-		b = 0.0f;
-		break;
-	case 'a':
-		RandomRGB();
-		break;
-	case 'w':
-		r = 1.0f;
-		g = 1.0f;
-		b = 1.0f;
-		break;
-	case 'k':
-		r = 0.0f;
-		g = 0.0f;
-		b = 0.0f;
-		break;
-	case 't':
-		glutTimerFunc(100, TimerFunction, 1);
-		IsTimerAlive = true;
-		break;
-	case 's':
-		IsTimerAlive = false;
-		break;
-	case 'q':
-		glutLeaveMainLoop();
-		break;
+
 	}
 	glutPostRedisplay();
 }

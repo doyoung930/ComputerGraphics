@@ -63,6 +63,12 @@
     <ClCompile Include="traning_11.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="training_12.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="traning_13.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vec2.h">

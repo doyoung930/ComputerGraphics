@@ -47,9 +47,10 @@ GLfloat mouse_x, mouse_y;
 
 
 
-
+//---   1 점 2 선 3 삼각형 4 사각형 5 오각형
+//		-1 점 -> 선/  -2 선 -> 삼각형 / -3 삼각형 -> 사각형 / -4 사각형 -> 오각형 / -5 오각형 -> 점
 // 영역 1
-int area1 = 2; //---  -1 변하는 중인 상태 1 점 2 선 3 삼각형 4 사각형 5 오각형
+int area1 = 2;
 GLfloat areax1 = -0.5;
 GLfloat areay1 = 0.5;
 // 영역 2
@@ -64,6 +65,15 @@ GLfloat areay3 = -0.5;
 int area4 = 5;
 GLfloat areax4 = 0.5;
 GLfloat areay4 = -0.5;
+
+bool s_TimerAlive = false;
+
+int timer_num = 0;
+int timer_num2 = 0;
+int timer_num3 = 0;
+int timer_num4 = 0;
+
+
 // 클래스
 
 struct Dot {
@@ -79,6 +89,25 @@ struct Dot {
 };
 vector<Dot> dots;
 
+// 임시저장 변수
+Dot temp_dot;
+Dot temp_dot2;
+
+Dot c2_temp_dot;
+Dot c2_temp_dot2;
+
+Dot c3_temp_dot;
+Dot c3_temp_dot2;
+
+Dot c4_temp_dot;
+Dot c4_temp_dot2;
+
+// 점 선 삼각형 사각형 오각형 init 값
+Dot s_dot;
+Dot s_line;
+Dot s_tri;
+Dot s_rec;
+Dot s_pen;
 
 // function
 void InitDot();
@@ -92,29 +121,38 @@ GLvoid drawScene();
 GLvoid Reshape(int w, int h);
 void InitBuffer();
 char* filetobuf(const char*);
+void TimerFunction(int value);
+
+void draw_temp();
+// change
+void chane_Dot_Line();
+void chane_Line_Tri();
+void chane_Tri_Rec();
+void chane_Rec_Pen();
+void chane_Pen_Dot();
 
 //--- Init
 void InitDot() {
 	Dot dot;
 
-	dot.x1 = 0.001;
-	dot.y1 = 0.001;
+	dot.x1 = 0;
+	dot.y1 = 0;
 	dot.z1 = 0;
 
-	dot.x2 = -0.001;
-	dot.y2 = -0.001;
+	dot.x2 = 0;
+	dot.y2 = 0;
 	dot.z2 = 0;
 
-	dot.x3 = 0.001;
-	dot.y3 = -0.001;
+	dot.x3 = 0;
+	dot.y3 = 0;
 	dot.z3 = 0;
 
-	dot.x4 = -0.001;
-	dot.y4 = -0.001;
+	dot.x4 = 0;
+	dot.y4 = 0;
 	dot.z4 = 0;
 
-	dot.x5 = -0.001;
-	dot.y5 = 0.001;
+	dot.x5 = 0;
+	dot.y5 = 0;
 	dot.z5 = 0;
 
 	dot.r = 0;
@@ -123,6 +161,7 @@ void InitDot() {
 
 
 	// 점 좌표 저장
+	s_dot = dot;
 	dots.push_back(dot);
 }
 void InitLine() {
@@ -152,7 +191,8 @@ void InitLine() {
 	dot.g = 0;
 	dot.b = 0;
 
-
+	temp_dot = dot;
+	s_line = dot;
 	// 점 좌표 저장
 	dots.push_back(dot);
 }
@@ -184,6 +224,7 @@ void InitTri() {
 	dot.g = 0;
 	dot.b = 0;
 
+	s_tri = dot;
 	// 점 좌표 저장
 	dots.push_back(dot);
 }
@@ -214,7 +255,7 @@ void InitRec() {
 	dot.g = 0;
 	dot.b = 0;
 
-
+	s_rec = dot;
 	// 점 좌표 저장
 	dots.push_back(dot);
 }
@@ -251,10 +292,11 @@ void InitPen() {
 	dot.g = 0;
 	dot.b = 0;
 
-
+	s_pen = dot;
 	// 점 좌표 저장
 	dots.push_back(dot);
 }
+
 
 //--- Draw
 
@@ -326,11 +368,11 @@ void DrawPen1() {
 	glVertex2f(dots[4].x5 + areax1, dots[4].y5 + areay1);
 
 
+
 	glEnd();
 }
 
-
-// --- 영역 2 그림기리기
+// --- 영역 2 그리기
 void DrawDot2() {
 	glPointSize(5.0f);
 	// 다각형 그리기
@@ -399,7 +441,7 @@ void DrawPen2() {
 	glEnd();
 }
 
-// --- 영역 3 그림기리기
+// --- 영역 3 그리기
 void DrawDot3() {
 	glPointSize(5.0f);
 	// 다각형 그리기
@@ -468,6 +510,7 @@ void DrawPen3() {
 	glEnd();
 }
 
+// --- 영역 4 그리기
 void DrawDot4() {
 	glPointSize(5.0f);
 	// 다각형 그리기
@@ -485,7 +528,7 @@ void DrawDot4() {
 void DrawLine4() {
 	glLineWidth(3.0f);
 	// 다각형 그리기
-	glBegin(GL_POLYGON);
+	glBegin(GL_LINES);
 
 	glVertex2f(dots[1].x1 + areax4, dots[1].y1 + areay4);
 	glVertex2f(dots[1].x2 + areax4, dots[1].y2 + areay4);
@@ -536,43 +579,642 @@ void DrawPen4() {
 
 	glEnd();
 }
-void DrawPen5() {
+// --- change
+void change_area1() {
+
+	// 임시 변수에 저장하여 그리기 다 그리면 임시변수 삭제 및 원래 변수로 바꾸기
+
+	temp_dot.x1 += (temp_dot.x1 - temp_dot2.x1) / 100;
+	temp_dot.x2 += (temp_dot.x2 - temp_dot2.x2) / 100;
+	temp_dot.x3 += (temp_dot.x3 - temp_dot2.x3) / 100;
+	temp_dot.x4 += (temp_dot.x4 - temp_dot2.x4) / 100;
+	temp_dot.x5 += (temp_dot.x5 - temp_dot2.x5) / 100;
+	temp_dot.y1 += (temp_dot.y1 - temp_dot2.y1) / 100;
+	temp_dot.y2 += (temp_dot.y2 - temp_dot2.y2) / 100;
+	temp_dot.y3 += (temp_dot.y3 - temp_dot2.y3) / 100;
+	temp_dot.y4 += (temp_dot.y4 - temp_dot2.y4) / 100;
+	temp_dot.y5 += (temp_dot.y5 - temp_dot2.y5) / 100;
+
+}
+void change_area1_t() {
+
+	// 임시 변수에 저장하여 그리기 다 그리면 임시변수 삭제 및 원래 변수로 바꾸기
+
+	temp_dot.x1 += (s_tri.x1 - s_line.x1) / 100;
+	temp_dot.x2 += (s_tri.x2 - s_line.x2) / 100;
+	temp_dot.x3 += (s_tri.x3 - s_line.x3) / 100;
+	temp_dot.x4 += (s_tri.x4 - s_line.x4) / 100;
+	temp_dot.x5 += (s_tri.x5 - s_line.x5) / 100;
+	temp_dot.y1 += (s_tri.y1 - s_line.y1) / 100;
+	temp_dot.y2 += (s_tri.y2 - s_line.y2) / 100;
+	temp_dot.y3 += (s_tri.y3 - s_line.y3) / 100;
+	temp_dot.y4 += (s_tri.y4 - s_line.y4) / 100;
+	temp_dot.y5 += (s_tri.y5 - s_line.y5) / 100;
+
+}
+void change_area1_r() {
+
+	// 임시 변수에 저장하여 그리기 다 그리면 임시변수 삭제 및 원래 변수로 바꾸기
+
+	temp_dot.x1 += (s_rec.x1 - s_tri.x1) / 100;
+	temp_dot.x2 += (s_rec.x2 - s_tri.x2) / 100;
+	temp_dot.x3 += (s_rec.x3 - s_tri.x3) / 100;
+	temp_dot.x4 += (s_rec.x4 - s_tri.x4) / 100;
+	temp_dot.x5 += (s_rec.x5 - s_tri.x5) / 100;
+	temp_dot.y1 += (s_rec.y1 - s_tri.y1) / 100;
+	temp_dot.y2 += (s_rec.y2 - s_tri.y2) / 100;
+	temp_dot.y3 += (s_rec.y3 - s_tri.y3) / 100;
+	temp_dot.y4 += (s_rec.y4 - s_tri.y4) / 100;
+	temp_dot.y5 += (s_rec.y5 - s_tri.y5) / 100;
+
+}
+void change_area1_p() {
+
+	// 임시 변수에 저장하여 그리기 다 그리면 임시변수 삭제 및 원래 변수로 바꾸기
+
+	temp_dot.x1 += (s_pen.x1 - s_rec.x1) / 100;
+	temp_dot.x2 += (s_pen.x2 - s_rec.x2) / 100;
+	temp_dot.x3 += (s_pen.x3 - s_rec.x3) / 100;
+	temp_dot.x4 += (s_pen.x4 - s_rec.x4) / 100;
+	temp_dot.x5 += (s_pen.x5 - s_rec.x5) / 100;
+	temp_dot.y1 += (s_pen.y1 - s_rec.y1) / 100;
+	temp_dot.y2 += (s_pen.y2 - s_rec.y2) / 100;
+	temp_dot.y3 += (s_pen.y3 - s_rec.y3) / 100;
+	temp_dot.y4 += (s_pen.y4 - s_rec.y4) / 100;
+	temp_dot.y5 += (s_pen.y5 - s_rec.y5) / 100;
+
+}
+void change_area1_d() {
+
+	// 임시 변수에 저장하여 그리기 다 그리면 임시변수 삭제 및 원래 변수로 바꾸기
+
+	temp_dot.x1 -= (s_pen.x1 - s_dot.x1) / 100;
+	temp_dot.x2 -= (s_pen.x2 - s_dot.x2) / 100;
+	temp_dot.x3 -= (s_pen.x3 - s_dot.x3) / 100;
+	temp_dot.x4 -= (s_pen.x4 - s_dot.x4) / 100;
+	temp_dot.x5 -= (s_pen.x5 - s_dot.x5) / 100;
+	temp_dot.y1 -= (s_pen.y1 - s_dot.y1) / 100;
+	temp_dot.y2 -= (s_pen.y2 - s_dot.y2) / 100;
+	temp_dot.y3 -= (s_pen.y3 - s_dot.y3) / 100;
+	temp_dot.y4 -= (s_pen.y4 - s_dot.y4) / 100;
+	temp_dot.y5 -= (s_pen.y5 - s_dot.y5) / 100;
+
+}
+
+void change_area2() {
+
+	// 임시 변수에 저장하여 그리기 다 그리면 임시변수 삭제 및 원래 변수로 바꾸기
+
+	c2_temp_dot.x1 += (c2_temp_dot.x1 - c2_temp_dot2.x1) / 100;
+	c2_temp_dot.x2 += (c2_temp_dot.x2 - c2_temp_dot2.x2) / 100;
+	c2_temp_dot.x3 += (c2_temp_dot.x3 - c2_temp_dot2.x3) / 100;
+	c2_temp_dot.x4 += (c2_temp_dot.x4 - c2_temp_dot2.x4) / 100;
+	c2_temp_dot.x5 += (c2_temp_dot.x5 - c2_temp_dot2.x5) / 100;
+	c2_temp_dot.y1 += (c2_temp_dot.y1 - c2_temp_dot2.y1) / 100;
+	c2_temp_dot.y2 += (c2_temp_dot.y2 - c2_temp_dot2.y2) / 100;
+	c2_temp_dot.y3 += (c2_temp_dot.y3 - c2_temp_dot2.y3) / 100;
+	c2_temp_dot.y4 += (c2_temp_dot.y4 - c2_temp_dot2.y4) / 100;
+	c2_temp_dot.y5 += (c2_temp_dot.y5 - c2_temp_dot2.y5) / 100;
+
+}
+void change_area2_t() {
+
+	// 임시 변수에 저장하여 그리기 다 그리면 임시변수 삭제 및 원래 변수로 바꾸기
+
+	c2_temp_dot.x1 += (s_tri.x1 - s_line.x1) / 100;
+	c2_temp_dot.x2 += (s_tri.x2 - s_line.x2) / 100;
+	c2_temp_dot.x3 += (s_tri.x3 - s_line.x3) / 100;
+	c2_temp_dot.x4 += (s_tri.x4 - s_line.x4) / 100;
+	c2_temp_dot.x5 += (s_tri.x5 - s_line.x5) / 100;
+	c2_temp_dot.y1 += (s_tri.y1 - s_line.y1) / 100;
+	c2_temp_dot.y2 += (s_tri.y2 - s_line.y2) / 100;
+	c2_temp_dot.y3 += (s_tri.y3 - s_line.y3) / 100;
+	c2_temp_dot.y4 += (s_tri.y4 - s_line.y4) / 100;
+	c2_temp_dot.y5 += (s_tri.y5 - s_line.y5) / 100;
+
+}
+void change_area2_r() {
+
+	// 임시 변수에 저장하여 그리기 다 그리면 임시변수 삭제 및 원래 변수로 바꾸기
+
+	c2_temp_dot.x1 += (s_rec.x1 - s_tri.x1) / 100;
+	c2_temp_dot.x2 += (s_rec.x2 - s_tri.x2) / 100;
+	c2_temp_dot.x3 += (s_rec.x3 - s_tri.x3) / 100;
+	c2_temp_dot.x4 += (s_rec.x4 - s_tri.x4) / 100;
+	c2_temp_dot.x5 += (s_rec.x5 - s_tri.x5) / 100;
+	c2_temp_dot.y1 += (s_rec.y1 - s_tri.y1) / 100;
+	c2_temp_dot.y2 += (s_rec.y2 - s_tri.y2) / 100;
+	c2_temp_dot.y3 += (s_rec.y3 - s_tri.y3) / 100;
+	c2_temp_dot.y4 += (s_rec.y4 - s_tri.y4) / 100;
+	c2_temp_dot.y5 += (s_rec.y5 - s_tri.y5) / 100;
+
+}
+void change_area2_p() {
+
+	// 임시 변수에 저장하여 그리기 다 그리면 임시변수 삭제 및 원래 변수로 바꾸기
+
+	c2_temp_dot.x1 += (s_pen.x1 - s_rec.x1) / 100;
+	c2_temp_dot.x2 += (s_pen.x2 - s_rec.x2) / 100;
+	c2_temp_dot.x3 += (s_pen.x3 - s_rec.x3) / 100;
+	c2_temp_dot.x4 += (s_pen.x4 - s_rec.x4) / 100;
+	c2_temp_dot.x5 += (s_pen.x5 - s_rec.x5) / 100;
+	c2_temp_dot.y1 += (s_pen.y1 - s_rec.y1) / 100;
+	c2_temp_dot.y2 += (s_pen.y2 - s_rec.y2) / 100;
+	c2_temp_dot.y3 += (s_pen.y3 - s_rec.y3) / 100;
+	c2_temp_dot.y4 += (s_pen.y4 - s_rec.y4) / 100;
+	c2_temp_dot.y5 += (s_pen.y5 - s_rec.y5) / 100;
+
+}
+void change_area2_d() {
+
+	// 임시 변수에 저장하여 그리기 다 그리면 임시변수 삭제 및 원래 변수로 바꾸기
+
+	c2_temp_dot.x1 -= (s_pen.x1 - s_dot.x1) / 100;
+	c2_temp_dot.x2 -= (s_pen.x2 - s_dot.x2) / 100;
+	c2_temp_dot.x3 -= (s_pen.x3 - s_dot.x3) / 100;
+	c2_temp_dot.x4 -= (s_pen.x4 - s_dot.x4) / 100;
+	c2_temp_dot.x5 -= (s_pen.x5 - s_dot.x5) / 100;
+	c2_temp_dot.y1 -= (s_pen.y1 - s_dot.y1) / 100;
+	c2_temp_dot.y2 -= (s_pen.y2 - s_dot.y2) / 100;
+	c2_temp_dot.y3 -= (s_pen.y3 - s_dot.y3) / 100;
+	c2_temp_dot.y4 -= (s_pen.y4 - s_dot.y4) / 100;
+	c2_temp_dot.y5 -= (s_pen.y5 - s_dot.y5) / 100;
+
+}
+
+void change_area3() {
+
+	// 임시 변수에 저장하여 그리기 다 그리면 임시변수 삭제 및 원래 변수로 바꾸기
+
+	c3_temp_dot.x1 += (c3_temp_dot.x1 - c3_temp_dot2.x1) / 100;
+	c3_temp_dot.x2 += (c3_temp_dot.x2 - c3_temp_dot2.x2) / 100;
+	c3_temp_dot.x3 += (c3_temp_dot.x3 - c3_temp_dot2.x3) / 100;
+	c3_temp_dot.x4 += (c3_temp_dot.x4 - c3_temp_dot2.x4) / 100;
+	c3_temp_dot.x5 += (c3_temp_dot.x5 - c3_temp_dot2.x5) / 100;
+	c3_temp_dot.y1 += (c3_temp_dot.y1 - c3_temp_dot2.y1) / 100;
+	c3_temp_dot.y2 += (c3_temp_dot.y2 - c3_temp_dot2.y2) / 100;
+	c3_temp_dot.y3 += (c3_temp_dot.y3 - c3_temp_dot2.y3) / 100;
+	c3_temp_dot.y4 += (c3_temp_dot.y4 - c3_temp_dot2.y4) / 100;
+	c3_temp_dot.y5 += (c3_temp_dot.y5 - c3_temp_dot2.y5) / 100;
+
+}
+void change_area3_t() {
+
+	// 임시 변수에 저장하여 그리기 다 그리면 임시변수 삭제 및 원래 변수로 바꾸기
+
+	c3_temp_dot.x1 += (s_tri.x1 - s_line.x1) / 100;
+	c3_temp_dot.x2 += (s_tri.x2 - s_line.x2) / 100;
+	c3_temp_dot.x3 += (s_tri.x3 - s_line.x3) / 100;
+	c3_temp_dot.x4 += (s_tri.x4 - s_line.x4) / 100;
+	c3_temp_dot.x5 += (s_tri.x5 - s_line.x5) / 100;
+	c3_temp_dot.y1 += (s_tri.y1 - s_line.y1) / 100;
+	c3_temp_dot.y2 += (s_tri.y2 - s_line.y2) / 100;
+	c3_temp_dot.y3 += (s_tri.y3 - s_line.y3) / 100;
+	c3_temp_dot.y4 += (s_tri.y4 - s_line.y4) / 100;
+	c3_temp_dot.y5 += (s_tri.y5 - s_line.y5) / 100;
+
+}
+void change_area3_r() {
+
+	// 임시 변수에 저장하여 그리기 다 그리면 임시변수 삭제 및 원래 변수로 바꾸기
+
+	c3_temp_dot.x1 += (s_rec.x1 - s_tri.x1) / 100;
+	c3_temp_dot.x2 += (s_rec.x2 - s_tri.x2) / 100;
+	c3_temp_dot.x3 += (s_rec.x3 - s_tri.x3) / 100;
+	c3_temp_dot.x4 += (s_rec.x4 - s_tri.x4) / 100;
+	c3_temp_dot.x5 += (s_rec.x5 - s_tri.x5) / 100;
+	c3_temp_dot.y1 += (s_rec.y1 - s_tri.y1) / 100;
+	c3_temp_dot.y2 += (s_rec.y2 - s_tri.y2) / 100;
+	c3_temp_dot.y3 += (s_rec.y3 - s_tri.y3) / 100;
+	c3_temp_dot.y4 += (s_rec.y4 - s_tri.y4) / 100;
+	c3_temp_dot.y5 += (s_rec.y5 - s_tri.y5) / 100;
+
+}
+void change_area3_p() {
+
+	// 임시 변수에 저장하여 그리기 다 그리면 임시변수 삭제 및 원래 변수로 바꾸기
+
+	c3_temp_dot.x1 += (s_pen.x1 - s_rec.x1) / 100;
+	c3_temp_dot.x2 += (s_pen.x2 - s_rec.x2) / 100;
+	c3_temp_dot.x3 += (s_pen.x3 - s_rec.x3) / 100;
+	c3_temp_dot.x4 += (s_pen.x4 - s_rec.x4) / 100;
+	c3_temp_dot.x5 += (s_pen.x5 - s_rec.x5) / 100;
+	c3_temp_dot.y1 += (s_pen.y1 - s_rec.y1) / 100;
+	c3_temp_dot.y2 += (s_pen.y2 - s_rec.y2) / 100;
+	c3_temp_dot.y3 += (s_pen.y3 - s_rec.y3) / 100;
+	c3_temp_dot.y4 += (s_pen.y4 - s_rec.y4) / 100;
+	c3_temp_dot.y5 += (s_pen.y5 - s_rec.y5) / 100;
+
+}
+void change_area3_d() {
+
+	// 임시 변수에 저장하여 그리기 다 그리면 임시변수 삭제 및 원래 변수로 바꾸기
+
+	c3_temp_dot.x1 -= (s_pen.x1 - s_dot.x1) / 100;
+	c3_temp_dot.x2 -= (s_pen.x2 - s_dot.x2) / 100;
+	c3_temp_dot.x3 -= (s_pen.x3 - s_dot.x3) / 100;
+	c3_temp_dot.x4 -= (s_pen.x4 - s_dot.x4) / 100;
+	c3_temp_dot.x5 -= (s_pen.x5 - s_dot.x5) / 100;
+	c3_temp_dot.y1 -= (s_pen.y1 - s_dot.y1) / 100;
+	c3_temp_dot.y2 -= (s_pen.y2 - s_dot.y2) / 100;
+	c3_temp_dot.y3 -= (s_pen.y3 - s_dot.y3) / 100;
+	c3_temp_dot.y4 -= (s_pen.y4 - s_dot.y4) / 100;
+	c3_temp_dot.y5 -= (s_pen.y5 - s_dot.y5) / 100;
+
+}
+
+void change_area4() {
+
+	// 임시 변수에 저장하여 그리기 다 그리면 임시변수 삭제 및 원래 변수로 바꾸기
+
+	c4_temp_dot.x1 += (c4_temp_dot.x1 - c4_temp_dot2.x1) / 100;
+	c4_temp_dot.x2 += (c4_temp_dot.x2 - c4_temp_dot2.x2) / 100;
+	c4_temp_dot.x3 += (c4_temp_dot.x3 - c4_temp_dot2.x3) / 100;
+	c4_temp_dot.x4 += (c4_temp_dot.x4 - c4_temp_dot2.x4) / 100;
+	c4_temp_dot.x5 += (c4_temp_dot.x5 - c4_temp_dot2.x5) / 100;
+	c4_temp_dot.y1 += (c4_temp_dot.y1 - c4_temp_dot2.y1) / 100;
+	c4_temp_dot.y2 += (c4_temp_dot.y2 - c4_temp_dot2.y2) / 100;
+	c4_temp_dot.y3 += (c4_temp_dot.y3 - c4_temp_dot2.y3) / 100;
+	c4_temp_dot.y4 += (c4_temp_dot.y4 - c4_temp_dot2.y4) / 100;
+	c4_temp_dot.y5 += (c4_temp_dot.y5 - c4_temp_dot2.y5) / 100;
+
+}
+void change_area4_t() {
+
+	// 임시 변수에 저장하여 그리기 다 그리면 임시변수 삭제 및 원래 변수로 바꾸기
+
+	c4_temp_dot.x1 += (s_tri.x1 - s_line.x1) / 100;
+	c4_temp_dot.x2 += (s_tri.x2 - s_line.x2) / 100;
+	c4_temp_dot.x3 += (s_tri.x3 - s_line.x3) / 100;
+	c4_temp_dot.x4 += (s_tri.x4 - s_line.x4) / 100;
+	c4_temp_dot.x5 += (s_tri.x5 - s_line.x5) / 100;
+	c4_temp_dot.y1 += (s_tri.y1 - s_line.y1) / 100;
+	c4_temp_dot.y2 += (s_tri.y2 - s_line.y2) / 100;
+	c4_temp_dot.y3 += (s_tri.y3 - s_line.y3) / 100;
+	c4_temp_dot.y4 += (s_tri.y4 - s_line.y4) / 100;
+	c4_temp_dot.y5 += (s_tri.y5 - s_line.y5) / 100;
+
+}
+void change_area4_r() {
+
+	// 임시 변수에 저장하여 그리기 다 그리면 임시변수 삭제 및 원래 변수로 바꾸기
+
+	c4_temp_dot.x1 += (s_rec.x1 - s_tri.x1) / 100;
+	c4_temp_dot.x2 += (s_rec.x2 - s_tri.x2) / 100;
+	c4_temp_dot.x3 += (s_rec.x3 - s_tri.x3) / 100;
+	c4_temp_dot.x4 += (s_rec.x4 - s_tri.x4) / 100;
+	c4_temp_dot.x5 += (s_rec.x5 - s_tri.x5) / 100;
+	c4_temp_dot.y1 += (s_rec.y1 - s_tri.y1) / 100;
+	c4_temp_dot.y2 += (s_rec.y2 - s_tri.y2) / 100;
+	c4_temp_dot.y3 += (s_rec.y3 - s_tri.y3) / 100;
+	c4_temp_dot.y4 += (s_rec.y4 - s_tri.y4) / 100;
+	c4_temp_dot.y5 += (s_rec.y5 - s_tri.y5) / 100;
+
+}
+void change_area4_p() {
+
+	// 임시 변수에 저장하여 그리기 다 그리면 임시변수 삭제 및 원래 변수로 바꾸기
+
+	c4_temp_dot.x1 += (s_pen.x1 - s_rec.x1) / 100;
+	c4_temp_dot.x2 += (s_pen.x2 - s_rec.x2) / 100;
+	c4_temp_dot.x3 += (s_pen.x3 - s_rec.x3) / 100;
+	c4_temp_dot.x4 += (s_pen.x4 - s_rec.x4) / 100;
+	c4_temp_dot.x5 += (s_pen.x5 - s_rec.x5) / 100;
+	c4_temp_dot.y1 += (s_pen.y1 - s_rec.y1) / 100;
+	c4_temp_dot.y2 += (s_pen.y2 - s_rec.y2) / 100;
+	c4_temp_dot.y3 += (s_pen.y3 - s_rec.y3) / 100;
+	c4_temp_dot.y4 += (s_pen.y4 - s_rec.y4) / 100;
+	c4_temp_dot.y5 += (s_pen.y5 - s_rec.y5) / 100;
+
+}
+void change_area4_d() {
+
+	// 임시 변수에 저장하여 그리기 다 그리면 임시변수 삭제 및 원래 변수로 바꾸기
+
+	c4_temp_dot.x1 -= (s_pen.x1 - s_dot.x1) / 100;
+	c4_temp_dot.x2 -= (s_pen.x2 - s_dot.x2) / 100;
+	c4_temp_dot.x3 -= (s_pen.x3 - s_dot.x3) / 100;
+	c4_temp_dot.x4 -= (s_pen.x4 - s_dot.x4) / 100;
+	c4_temp_dot.x5 -= (s_pen.x5 - s_dot.x5) / 100;
+	c4_temp_dot.y1 -= (s_pen.y1 - s_dot.y1) / 100;
+	c4_temp_dot.y2 -= (s_pen.y2 - s_dot.y2) / 100;
+	c4_temp_dot.y3 -= (s_pen.y3 - s_dot.y3) / 100;
+	c4_temp_dot.y4 -= (s_pen.y4 - s_dot.y4) / 100;
+	c4_temp_dot.y5 -= (s_pen.y5 - s_dot.y5) / 100;
+
+}
+
+// 변하는거 그리기
+void DrawTemp1() {
+	// 다각형 그리기
+	glBegin(GL_LINES);
+
+	glVertex2f(temp_dot.x1 + areax1, temp_dot.y1 + areay1);
+	glVertex2f(temp_dot.x2 + areax1, temp_dot.y2 + areay1);
+	glVertex2f(temp_dot.x3 + areax1, temp_dot.y3 + areay1);
+	glVertex2f(temp_dot.x4 + areax1, temp_dot.y4 + areay1);
+	glVertex2f(temp_dot.x5 + areax1, temp_dot.y5 + areay1);
+
+
+	glEnd();
+}
+void DrawTemp1_p() {
 	// 다각형 그리기
 	glBegin(GL_POLYGON);
 
-	glVertex2f(dots[4].x1, dots[4].y1);
-	glVertex2f(dots[4].x2, dots[4].y2);
-	glVertex2f(dots[4].x3, dots[4].y3);
-	glVertex2f(dots[4].x4, dots[4].y4);
-	glVertex2f(dots[4].x5, dots[4].y5);
+	glVertex2f(temp_dot.x1 + areax1, temp_dot.y1 + areay1);
+	glVertex2f(temp_dot.x2 + areax1, temp_dot.y2 + areay1);
+	glVertex2f(temp_dot.x3 + areax1, temp_dot.y3 + areay1);
+	glVertex2f(temp_dot.x4 + areax1, temp_dot.y4 + areay1);
+	glVertex2f(temp_dot.x5 + areax1, temp_dot.y5 + areay1);
+
+
+	glEnd();
+}
+void DrawTemp1_d() {
+	// 다각형 그리기
+	glBegin(GL_POINTS);
+
+	glVertex2f(temp_dot.x1 + areax1, temp_dot.y1 + areay1);
+	glVertex2f(temp_dot.x2 + areax1, temp_dot.y2 + areay1);
+	glVertex2f(temp_dot.x3 + areax1, temp_dot.y3 + areay1);
+	glVertex2f(temp_dot.x4 + areax1, temp_dot.y4 + areay1);
+	glVertex2f(temp_dot.x5 + areax1, temp_dot.y5 + areay1);
 
 
 	glEnd();
 }
 
+// 변하는거 그리기
+void DrawTemp2() {
+	// 다각형 그리기
+	glBegin(GL_LINES);
+
+	glVertex2f(c2_temp_dot.x1 + areax2, c2_temp_dot.y1 + areay2);
+	glVertex2f(c2_temp_dot.x2 + areax2, c2_temp_dot.y2 + areay2);
+	glVertex2f(c2_temp_dot.x3 + areax2, c2_temp_dot.y3 + areay2);
+	glVertex2f(c2_temp_dot.x4 + areax2, c2_temp_dot.y4 + areay2);
+	glVertex2f(c2_temp_dot.x5 + areax2, c2_temp_dot.y5 + areay2);
+
+
+	glEnd();
+}
+void DrawTemp2_p() {
+	// 다각형 그리기
+	glBegin(GL_POLYGON);
+
+	glVertex2f(c2_temp_dot.x1 + areax2, c2_temp_dot.y1 + areay2);
+	glVertex2f(c2_temp_dot.x2 + areax2, c2_temp_dot.y2 + areay2);
+	glVertex2f(c2_temp_dot.x3 + areax2, c2_temp_dot.y3 + areay2);
+	glVertex2f(c2_temp_dot.x4 + areax2, c2_temp_dot.y4 + areay2);
+	glVertex2f(c2_temp_dot.x5 + areax2, c2_temp_dot.y5 + areay2);
+
+
+	glEnd();
+}
+void DrawTemp2_d() {
+	// 다각형 그리기
+	glBegin(GL_POINTS);
+
+	glVertex2f(c2_temp_dot.x1 + areax2, c2_temp_dot.y1 + areay2);
+	glVertex2f(c2_temp_dot.x2 + areax2, c2_temp_dot.y2 + areay2);
+	glVertex2f(c2_temp_dot.x3 + areax2, c2_temp_dot.y3 + areay2);
+	glVertex2f(c2_temp_dot.x4 + areax2, c2_temp_dot.y4 + areay2);
+	glVertex2f(c2_temp_dot.x5 + areax2, c2_temp_dot.y5 + areay2);
+
+
+	glEnd();
+}
+
+// 변하는거 그리기
+void DrawTemp3() {
+	// 다각형 그리기
+	glBegin(GL_LINES);
+
+	glVertex2f(c3_temp_dot.x1 + areax3, c3_temp_dot.y1 + areay3);
+	glVertex2f(c3_temp_dot.x2 + areax3, c3_temp_dot.y2 + areay3);
+	glVertex2f(c3_temp_dot.x3 + areax3, c3_temp_dot.y3 + areay3);
+	glVertex2f(c3_temp_dot.x4 + areax3, c3_temp_dot.y4 + areay3);
+	glVertex2f(c3_temp_dot.x5 + areax3, c3_temp_dot.y5 + areay3);
+
+
+	glEnd();
+}
+void DrawTemp3_p() {
+	// 다각형 그리기
+	glBegin(GL_POLYGON);
+
+	glVertex2f(c3_temp_dot.x1 + areax3, c3_temp_dot.y1 + areay3);
+	glVertex2f(c3_temp_dot.x2 + areax3, c3_temp_dot.y2 + areay3);
+	glVertex2f(c3_temp_dot.x3 + areax3, c3_temp_dot.y3 + areay3);
+	glVertex2f(c3_temp_dot.x4 + areax3, c3_temp_dot.y4 + areay3);
+	glVertex2f(c3_temp_dot.x5 + areax3, c3_temp_dot.y5 + areay3);
+
+
+	glEnd();
+}
+void DrawTemp3_d() {
+	// 다각형 그리기
+	glBegin(GL_POINTS);
+
+	glVertex2f(c3_temp_dot.x1 + areax3, c3_temp_dot.y1 + areay3);
+	glVertex2f(c3_temp_dot.x2 + areax3, c3_temp_dot.y2 + areay3);
+	glVertex2f(c3_temp_dot.x3 + areax3, c3_temp_dot.y3 + areay3);
+	glVertex2f(c3_temp_dot.x4 + areax3, c3_temp_dot.y4 + areay3);
+	glVertex2f(c3_temp_dot.x5 + areax3, c3_temp_dot.y5 + areay3);
+
+
+	glEnd();
+}
+
+// 변하는거 그리기
+void DrawTemp4() {
+	// 다각형 그리기
+	glBegin(GL_LINES);
+
+	glVertex2f(c4_temp_dot.x1 + areax4, c4_temp_dot.y1 + areay4);
+	glVertex2f(c4_temp_dot.x2 + areax4, c4_temp_dot.y2 + areay4);
+	glVertex2f(c4_temp_dot.x3 + areax4, c4_temp_dot.y3 + areay4);
+	glVertex2f(c4_temp_dot.x4 + areax4, c4_temp_dot.y4 + areay4);
+	glVertex2f(c4_temp_dot.x5 + areax4, c4_temp_dot.y5 + areay4);
+
+
+	glEnd();
+}
+void DrawTemp4_p() {
+	// 다각형 그리기
+	glBegin(GL_POLYGON);
+
+	glVertex2f(c4_temp_dot.x1 + areax4, c4_temp_dot.y1 + areay4);
+	glVertex2f(c4_temp_dot.x2 + areax4, c4_temp_dot.y2 + areay4);
+	glVertex2f(c4_temp_dot.x3 + areax4, c4_temp_dot.y3 + areay4);
+	glVertex2f(c4_temp_dot.x4 + areax4, c4_temp_dot.y4 + areay4);
+	glVertex2f(c4_temp_dot.x5 + areax4, c4_temp_dot.y5 + areay4);
+
+
+	glEnd();
+}
+void DrawTemp4_d() {
+	// 다각형 그리기
+	glBegin(GL_POINTS);
+
+	glVertex2f(c4_temp_dot.x1 + areax4, c4_temp_dot.y1 + areay4);
+	glVertex2f(c4_temp_dot.x2 + areax4, c4_temp_dot.y2 + areay4);
+	glVertex2f(c4_temp_dot.x3 + areax4, c4_temp_dot.y3 + areay4);
+	glVertex2f(c4_temp_dot.x4 + areax4, c4_temp_dot.y4 + areay4);
+	glVertex2f(c4_temp_dot.x5 + areax4, c4_temp_dot.y5 + areay4);
+
+
+	glEnd();
+}
+
+
 void Keyboard(unsigned char key, int x, int y)
 {
 	switch (key) {
-	case 'a':
-		tri_line = true;
-		break;
-	case 'b':
-		tri_line = false;
-		break;
 	case '1':
-		area1 = 1;
+		if (s_TimerAlive == false)
+			glutTimerFunc(10, TimerFunction, 1);
+
+		if (area1 == 1) {
+			area1 = -1;
+			temp_dot = s_dot;
+			temp_dot2 = s_line;
+		}
+		else if (area1 == 2) {
+			area1 = -2;
+			temp_dot = s_line;
+			temp_dot2 = s_tri;
+		}
+		else if (area1 == 3)
+		{
+			area1 = -3;
+			temp_dot = s_tri;
+			temp_dot2 = s_rec;
+		}
+		else if (area1 == 4)
+		{
+			area1 = -4;
+			temp_dot = s_rec;
+			temp_dot2 = s_pen;
+		}
+		else if (area1 == 5)
+		{
+			area1 = -5;
+			temp_dot = s_pen;
+			temp_dot2 = s_dot;
+		}
+
+
+		s_TimerAlive = true;
 		break;
 	case '2':
-		area1 = 2;
+		if (s_TimerAlive == false)
+			glutTimerFunc(10, TimerFunction, 1);
+
+		if (area2 == 1) {
+			area2 = -1;
+			c2_temp_dot = s_dot;
+			c2_temp_dot2 = s_line;
+		}
+		else if (area2 == 2) {
+			area2 = -2;
+			c2_temp_dot = s_line;
+			c2_temp_dot2 = s_tri;
+		}
+		else if (area2 == 3)
+		{
+			area2 = -3;
+			c2_temp_dot = s_tri;
+			c2_temp_dot2 = s_rec;
+		}
+		else if (area2 == 4)
+		{
+			area2 = -4;
+			c2_temp_dot = s_rec;
+			c2_temp_dot2 = s_pen;
+		}
+		else if (area2 == 5)
+		{
+			area2 = -5;
+			c2_temp_dot = s_pen;
+			c2_temp_dot2 = s_dot;
+		}
+
+
+		s_TimerAlive = true;
 		break;
 	case '3':
-		area1 = 3;
+		if (s_TimerAlive == false)
+			glutTimerFunc(10, TimerFunction, 1);
+
+		if (area3 == 1) {
+			area3 = -1;
+			c3_temp_dot = s_dot;
+			c3_temp_dot2 = s_line;
+		}
+		else if (area3 == 2) {
+			area3 = -2;
+			c3_temp_dot = s_line;
+			c3_temp_dot2 = s_tri;
+		}
+		else if (area3 == 3)
+		{
+			area3 = -3;
+			c3_temp_dot = s_tri;
+			c3_temp_dot2 = s_rec;
+		}
+		else if (area3 == 4)
+		{
+			area3 = -4;
+			c3_temp_dot = s_rec;
+			c3_temp_dot2 = s_pen;
+		}
+		else if (area3 == 5)
+		{
+			area3 = -5;
+			c3_temp_dot = s_pen;
+			c3_temp_dot2 = s_dot;
+		}
+
+
+		s_TimerAlive = true;
 		break;
 	case '4':
-		area1 = 4;
-		break;
-	case '5':
-		area1 = 5;
+		if (s_TimerAlive == false)
+			glutTimerFunc(10, TimerFunction, 1);
+
+		if (area4 == 1) {
+			area4 = -1;
+			c4_temp_dot = s_dot;
+			c4_temp_dot2 = s_line;
+		}
+		else if (area4 == 2) {
+			area4 = -2;
+			c4_temp_dot = s_line;
+			c4_temp_dot2 = s_tri;
+		}
+		else if (area4 == 3)
+		{
+			area4 = -3;
+			c4_temp_dot = s_tri;
+			c4_temp_dot2 = s_rec;
+		}
+		else if (area4 == 4)
+		{
+			area4 = -4;
+			c4_temp_dot = s_rec;
+			c4_temp_dot2 = s_pen;
+		}
+		else if (area4 == 5)
+		{
+			area4 = -5;
+			c4_temp_dot = s_pen;
+			c4_temp_dot2 = s_dot;
+		}
+
+
+		s_TimerAlive = true;
 		break;
 	}
 	glutPostRedisplay();
@@ -622,6 +1264,8 @@ void DrawTriByLine() {
 		{0.0, -1.0, 0.0} };
 }
 
+
+
 void BaseLine() {
 	const GLfloat linepos[2][3] = { //--- 삼각형 위치 값
 		{-1.0, 0.0, 0.0},
@@ -666,6 +1310,257 @@ void BaseLine() {
 
 }
 
+void area1_f() {
+	if (area1 == -1) {
+		change_area1();
+		if (timer_num == 70) {
+			area1 = 2;
+			timer_num = 0;
+
+		}
+		else {
+			timer_num++;
+		}
+	}
+	else if (area1 == -2) {
+		change_area1_t();
+		if (timer_num == 100) {
+			area1 = 3;
+			timer_num = 0;
+
+		}
+		else {
+			timer_num++;
+		}
+	}
+	else if (area1 == -3) {
+		change_area1_r();
+		if (timer_num == 100) {
+			area1 = 4;
+			timer_num = 0;
+
+		}
+		else {
+			timer_num++;
+		}
+	}
+	else if (area1 == -4) {
+		change_area1_p();
+		if (timer_num == 100) {
+			area1 = 5;
+			timer_num = 0;
+
+		}
+		else {
+			timer_num++;
+		}
+	}
+	else if (area1 == -5) {
+		change_area1_d();
+		if (timer_num == 100) {
+			area1 = 1;
+			timer_num = 0;
+
+		}
+		else {
+			timer_num++;
+		}
+	}
+}
+void area2_f() {
+	if (area2 == -1) {
+		change_area2();
+		if (timer_num2 == 70) {
+			area2 = 2;
+			timer_num2 = 0;
+
+		}
+		else {
+			timer_num2++;
+		}
+	}
+	else if (area2 == -2) {
+		change_area2_t();
+		if (timer_num2 == 100) {
+			area2 = 3;
+			timer_num2 = 0;
+
+		}
+		else {
+			timer_num2++;
+		}
+	}
+	else if (area2 == -3) {
+		change_area2_r();
+		if (timer_num2 == 100) {
+			area2 = 4;
+			timer_num2 = 0;
+
+		}
+		else {
+			timer_num2++;
+		}
+	}
+	else if (area2 == -4) {
+		change_area2_p();
+		if (timer_num2 == 100) {
+			area2 = 5;
+			timer_num2 = 0;
+
+		}
+		else {
+			timer_num2++;
+		}
+	}
+	else if (area2 == -5) {
+		change_area2_d();
+		if (timer_num2 == 100) {
+			area2 = 1;
+			timer_num2 = 0;
+
+		}
+		else {
+			timer_num2++;
+		}
+	}
+}
+
+void area3_f() {
+	if (area3 == -1) {
+		change_area3();
+		if (timer_num3 == 70) {
+			area3 = 2;
+			timer_num3 = 0;
+
+		}
+		else {
+			timer_num3++;
+		}
+	}
+	else if (area3 == -2) {
+		change_area3_t();
+		if (timer_num3 == 100) {
+			area3 = 3;
+			timer_num3 = 0;
+
+		}
+		else {
+			timer_num3++;
+		}
+	}
+	else if (area3 == -3) {
+		change_area3_r();
+		if (timer_num3 == 100) {
+			area3 = 4;
+			timer_num3 = 0;
+
+		}
+		else {
+			timer_num3++;
+		}
+	}
+	else if (area3 == -4) {
+		change_area3_p();
+		if (timer_num3 == 100) {
+			area3 = 5;
+			timer_num3 = 0;
+
+		}
+		else {
+			timer_num3++;
+		}
+	}
+	else if (area3 == -5) {
+		change_area3_d();
+		if (timer_num3 == 100) {
+			area3 = 1;
+			timer_num3 = 0;
+
+		}
+		else {
+			timer_num3++;
+		}
+	}
+}
+
+void area4_f() {
+	if (area4 == -1) {
+		change_area4();
+		if (timer_num4 == 70) {
+			area4 = 2;
+			timer_num4 = 0;
+
+		}
+		else {
+			timer_num4++;
+		}
+	}
+	else if (area4 == -2) {
+		change_area4_t();
+		if (timer_num4 == 100) {
+			area4 = 3;
+			timer_num4 = 0;
+
+		}
+		else {
+			timer_num4++;
+		}
+	}
+	else if (area4 == -3) {
+		change_area4_r();
+		if (timer_num4 == 100) {
+			area4 = 4;
+			timer_num4 = 0;
+
+		}
+		else {
+			timer_num4++;
+		}
+	}
+	else if (area4 == -4) {
+		change_area4_p();
+		if (timer_num4 == 100) {
+			area4 = 5;
+			timer_num4 = 0;
+
+		}
+		else {
+			timer_num4++;
+		}
+	}
+	else if (area4 == -5) {
+		change_area4_d();
+		if (timer_num4 == 100) {
+			area4 = 1;
+			timer_num4 = 0;
+
+		}
+		else {
+			timer_num4++;
+		}
+	}
+}
+// --- timer
+void TimerFunction(int value)
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	//area1 변환
+	area1_f();
+	area2_f();
+	area3_f();
+	area4_f();
+
+
+	drawScene();
+	glutPostRedisplay(); // 화면 재 출력
+
+
+	if (s_TimerAlive)
+		glutTimerFunc(10, TimerFunction, 1); // 타이머함수 재 설정
+}
+
+
 GLvoid drawScene()
 {
 
@@ -675,6 +1570,9 @@ GLvoid drawScene()
 	//--- 렌더링 파이프라인에 세이더 불러오기
 	glUseProgram(shaderProgramID);
 	BaseLine();
+
+	draw_temp();
+
 	if (area1 == 1)	DrawDot1();
 	else if (area1 == 2) DrawLine1();
 	else if (area1 == 3)DrawTri1();
@@ -784,13 +1682,38 @@ char* filetobuf(const char* file)
 	return buf; // Return the buffer 
 }
 
+void draw_temp() {
+	if (area1 == -1)
+		DrawTemp1();
+	else if (area1 == -2 || area1 == -3 || area1 == -4 || area1 == -5)
+		DrawTemp1_p();
+
+	if (area2 == -1)
+		DrawTemp2();
+	else if (area2 == -2 || area2 == -3 || area2 == -4 || area2 == -5)
+		DrawTemp2_p();
+
+	if (area3 == -1)
+		DrawTemp3();
+	else if (area3 == -2 || area3 == -3 || area3 == -4 || area3 == -5)
+		DrawTemp3_p();
+
+	if (area4 == -1)
+		DrawTemp4();
+	else if (area4 == -2 || area4 == -3 || area4 == -4 || area4 == -5)
+		DrawTemp4_p();
+
+}
+
 void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 {
+
 	InitDot();
 	InitLine();
 	InitTri();
 	InitRec();
 	InitPen();
+
 	//--- 윈도우 생성하기
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
